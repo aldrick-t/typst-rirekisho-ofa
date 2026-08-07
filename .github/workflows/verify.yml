@@ -1,0 +1,29 @@
+name: Verify template
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: 0.15.0
+      - name: Compile placeholder document
+        run: typst compile --root . --ignore-system-fonts --font-path fonts examples/example.typ dist/rirekisho.pdf
+      - name: Verify two A4 pages and render preview
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          test "$(pdfinfo dist/rirekisho.pdf | awk '/^Pages:/ {print $2}')" = 2
+          pdftoppm -png -r 144 dist/rirekisho.pdf dist/rirekisho
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rirekisho-preview
+          path: dist/

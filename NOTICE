@@ -1,0 +1,6 @@
+This template bundles Noto Sans CJK JP Regular and Bold from the Noto CJK
+project. Those font files are licensed under SIL Open Font License 1.1; see
+fonts/OFL.txt for the complete license text.
+
+The form is an original Typst implementation informed by the MHLW resume-form
+example. It is not an official government form.
