@@ -1,4 +1,4 @@
-#import "../src/rirekisho.typ": rirekisho
+#import "@preview/rirekisho-ofa:0.1.0": rirekisho
 
 #let example = (
   document-date: "YYYY年MM月DD日現在",

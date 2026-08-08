@@ -15,7 +15,7 @@
     ]
   } else {
     box(width: 34mm, height: 44mm, stroke: 0.7pt, inset: 0pt, clip: true)[
-      #image(photo, width: 34mm, height: 44mm, fit: "cover")
+      #photo
     ]
   }
 }
@@ -51,7 +51,11 @@
 )
 
 #let rirekisho(data) = {
-  set text(font: "Noto Sans CJK JP", size: 8.5pt, lang: "ja")
+  set text(
+    font: get(data, "font", fallback: "Noto Sans CJK JP"),
+    size: 8.5pt,
+    lang: "ja",
+  )
   set page(paper: "a4", margin: (x: 13mm, y: 12mm))
   set par(leading: 0.35em)
 

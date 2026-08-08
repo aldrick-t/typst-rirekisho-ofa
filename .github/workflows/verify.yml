@@ -15,14 +15,31 @@ jobs:
       - uses: typst-community/setup-typst@v4
         with:
           typst-version: 0.15.0
-      - name: Compile placeholder document
-        run: typst compile --root . --ignore-system-fonts --font-path fonts examples/example.typ dist/rirekisho.pdf
-      - name: Verify two A4 pages and render preview
+      - name: Install Japanese rendering dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y poppler-utils
-          test "$(pdfinfo dist/rirekisho.pdf | awk '/^Pages:/ {print $2}')" = 2
-          pdftoppm -png -r 144 dist/rirekisho.pdf dist/rirekisho
+          sudo apt-get install -y fonts-noto-cjk poppler-utils
+      - name: Register the local preview package
+        run: |
+          mkdir -p "$RUNNER_TEMP/typst-packages/preview/rirekisho-ofa"
+          ln -s "$GITHUB_WORKSPACE" "$RUNNER_TEMP/typst-packages/preview/rirekisho-ofa/0.1.0"
+      - name: Compile package example and initialized template
+        env:
+          TYPST_PACKAGE_PATH: ${{ runner.temp }}/typst-packages
+        run: |
+          typst compile examples/example.typ dist/rirekisho-example.pdf
+          typst init @preview/rirekisho-ofa:0.1.0 "$RUNNER_TEMP/rirekisho-ofa-init"
+          typst compile "$RUNNER_TEMP/rirekisho-ofa-init/main.typ" dist/rirekisho-template.pdf
+      - name: Verify package payload and two-page output
+        run: |
+          test -f typst.toml
+          test -f lib.typ
+          test -f template/main.typ
+          test -f thumbnail.png
+          test ! -d fonts
+          ! git ls-files | grep -E '(^|/)(fonts/|.*\.pdf$)'
+          test "$(pdfinfo dist/rirekisho-template.pdf | awk '/^Pages:/ {print $2}')" = 2
+          pdftoppm -png -r 144 dist/rirekisho-template.pdf dist/rirekisho
       - uses: actions/upload-artifact@v4
         with:
           name: rirekisho-preview
