@@ -62,13 +62,6 @@ content through `photo`; do not pass a string path into the package:
 The initialized template omits `photo`, which renders the standard empty photo
 slot.
 
-## Private data workflow
-
-See [the career-private workflow](docs/career-private-workflow.md) for the
-data-population method used with this package. It documents the separation of
-canonical career records, private identity and photo inputs, application
-overrides, and public-safe output validation without including private data.
-
 ## Local development
 
 Register the working tree as a local preview package, then compile both the
@@ -86,19 +79,6 @@ TYPST_PACKAGE_PATH="$PACKAGE_PATH" typst compile /tmp/rirekisho-ofa-init/main.ty
 
 The initialized template must compile without edits and produce exactly two A4
 pages.
-
-## Publish to Typst Universe
-
-The canonical source repository is
-[aldrick-t/typst-rirekisho-ofa](https://github.com/aldrick-t/typst-rirekisho-ofa).
-Submit the `0.1.0` package payload to
-`typst/packages/packages/preview/rirekisho-ofa/0.1.0/` in a fork of
-[`typst/packages`](https://github.com/typst/packages). Open the pull request as
-`rirekisho-ofa:0.1.0`, use the package checklist, and explain that OFA means
-“One For All”, the differentiating element in the package name.
-
-Typst Package versions are immutable. Publish a new semantic version for every
-fix or compatible addition.
 
 ## License and acknowledgements
 
